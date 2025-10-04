@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Create Contract - Inbit</title>
+  <link rel="stylesheet" href="../assets/css/client.css">
+  <link rel="stylesheet" href="../assets/css/client/create-contract.css">
+</head>
+<body>
+    <!-- ┌------------- SIDEBAR NAV -------------┐ -->
+    <nav class="sidebar" id="sidebar">
+        <div class="sidebar-head">
+            <h1 class="logo">Inbit</h1>
+        </div>
+
+        <!-- Add this right after .sidebar-head -->
+<div class="theme-toggle-container">
+    <button id="themeToggle" class="theme-toggle-btn" aria-label="Toggle theme">
+        <span class="theme-icon">🌙</span>
+        <span class="theme-label">Dark Mode</span>
+    </button>
+</div>
+
+        <ul class="nav-links">
+            <li><a href="dashboard.html" class="nav-link"><span class="icon">📊</span><span class="label">Dashboard</span></a></li>
+            <li><a href="post-job.html" class="nav-link"><span class="icon">➕</span><span class="label">Post Job</span></a></li>
+            <li><a href="matches.html" class="nav-link"><span class="icon">🔍</span><span class="label">Matches</span></a></li>
+            <li><a href="hires.html" class="nav-link"><span class="icon">👥</span><span class="label">My Hires</span></a></li>
+            <li><a href="contracts.html" class="nav-link"><span class="icon">📝</span><span class="label">Contracts</span></a></li>
+            <li><a href="messages.html" class="nav-link"><span class="icon">💬</span><span class="label">Messages</span></a></li>
+            <li><a href="notifications.html" class="nav-link"><span class="icon">🔔</span><span class="label">Notifications</span></a></li>
+            <li><a href="settings.html" class="nav-link"><span class="icon">⚙️</span><span class="label">Settings</span></a></li>
+            <li class="nav-footer"><a href="logout.html" class="nav-link logout"><span class="icon">🚪</span><span class="label">Logout</span></a></li>
+        </ul>
+    </nav>
+
+    <!-- ┌------------- MAIN CONTENT WRAPPER -------------┐ -->
+    <div class="main-wrapper" id="mainWrapper">
+        <header class="top-header">
+            <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Toggle menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            <div class="header-content">
+                <h1>Create Contract</h1>
+                <div class="user-info">
+                    <span>Finalize your agreement</span>
+                </div>
+            </div>
+        </header>
+
+        <div class="dashboard-container">
+            <section class="dashboard-section">
+                <div class="section-header">
+                    <h2>Contract Details</h2>
+                    <div class="contract-info" id="contractInfo">
+                        <div class="loading">Loading contract information...</div>
+                    </div>
+                </div>
+
+                <form id="contractForm" class="contract-form">
+                    <div class="form-group">
+                        <label for="paymentMethod">Payment Method</label>
+                        <select id="paymentMethod" class="form-select" required>
+                            <option value="">Select Payment Method</option>
+                            <option value="bank_transfer">Bank Transfer</option>
+                            <option value="crypto">Cryptocurrency</option>
+                            <option value="paypal">PayPal</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="amount">Contract Amount (USD)</label>
+                        <input type="number" id="amount" class="form-input" placeholder="Enter contract amount" min="0" step="0.01" required />
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="submit" class="submit-btn">
+                            <span class="btn-icon">📝</span>
+                            Create Contract
+                        </button>
+                        <a href="contracts.html" class="cancel-btn">Cancel</a>
+                    </div>
+                </form>
+            </section>
+        </div>
+    </div>
+
+    <script>
+        // Mobile menu functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const mobileMenuBtn = document.getElementById("mobileMenuBtn");
+            const sidebar = document.getElementById("sidebar");
+            const mainWrapper = document.getElementById("mainWrapper");
+            
+            if (mobileMenuBtn && sidebar) {
+                mobileMenuBtn.addEventListener("click", function(e) {
+                    e.stopPropagation();
+                    sidebar.classList.toggle("mobile-open");
+                    mainWrapper.classList.toggle("menu-open");
+                    mobileMenuBtn.classList.toggle("active");
+                });
+
+                mainWrapper.addEventListener('click', function(e) {
+                    if (e.target === mainWrapper && mainWrapper.classList.contains('menu-open')) {
+                        sidebar.classList.remove("mobile-open");
+                        mainWrapper.classList.remove("menu-open");
+                        mobileMenuBtn.classList.remove("active");
+                    }
+                });
+
+                document.querySelectorAll('.nav-link').forEach(link => {
+                    link.addEventListener('click', () => {
+                        sidebar.classList.remove("mobile-open");
+                        mainWrapper.classList.remove("menu-open");
+                        mobileMenuBtn.classList.remove("active");
+                    });
+                });
+            }
+
+            // Load contract information
+            loadContractInfo();
+        });
+
+        async function loadContractInfo() {
+            const params = new URLSearchParams(window.location.search);
+            const hireId = params.get("hire");
+            const finalId = params.get("final");
+
+            const infoContainer = document.getElementById('contractInfo');
+            
+            if (!hireId || !finalId) {
+                infoContainer.innerHTML = '<div class="error">Invalid contract creation request. Missing required parameters.</div>';
+                document.getElementById('contractForm').style.display = 'none';
+                return;
+            }
+
+            try {
+                // You might want to fetch hire details here to show to the client
+                infoContainer.innerHTML = `
+                    <div class="info-items">
+                        <div class="info-item">
+                            <span class="info-label">Hire ID</span>
+                            <span class="info-value">#${hireId}</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Final Submission</span>
+                            <span class="info-value">#${finalId}</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Status</span>
+                            <span class="info-value status-approved">Ready for Contract</span>
+                        </div>
+                    </div>
+                `;
+            } catch (error) {
+                infoContainer.innerHTML = '<div class="error">Error loading contract information.</div>';
+                console.error(error);
+            }
+        }
+    </script>
+
+    <script type="module" src="../assets/js/client/create-contract.js"></script>
+</body>
+</html>

@@ -1,0 +1,498 @@
+:root {
+  /* Dark Theme Colors */
+  --bg-primary: #0f0f23;
+  --bg-secondary: #1a1b2e;
+  --bg-tertiary: #252641;
+  --bg-card: #1e1f38;
+  --bg-hover: #2a2b4a;
+  
+  /* Accent Colors */
+  --accent-primary: #6c63ff;
+  --accent-secondary: #00d4aa;
+  --accent-warning: #ffb74d;
+  --accent-danger: #ff5c8d;
+  --accent-success: #4cd97b;
+  
+  /* Text Colors */
+  --text-primary: #ffffff;
+  --text-secondary: #a0a0c0;
+  --text-muted: #6a6a8a;
+  
+  /* Border Colors */
+  --border-primary: #343456;
+  --border-secondary: #40406a;
+  
+  /* Gradients */
+  --gradient-primary: linear-gradient(135deg, #6c63ff 0%, #4a42d4 100%);
+  --gradient-secondary: linear-gradient(135deg, #00d4aa 0%, #00a885 100%);
+  --gradient-card: linear-gradient(145deg, #1e1f38 0%, #252641 100%);
+  --gradient-sidebar: linear-gradient(180deg, #1a1b2e 0%, #0f0f23 100%);
+  
+  /* Typography */
+  --font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  
+  /* Spacing */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.25rem;
+  --space-6: 1.5rem;
+  --space-8: 2rem;
+  
+  /* Border Radius */
+  --radius-sm: 0.375rem;
+  --radius-md: 0.75rem;
+  --radius-lg: 1rem;
+  
+  /* Shadows */
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.4);
+  --shadow-lg: 0 16px 48px rgba(0, 0, 0, 0.5);
+  --shadow-glow: 0 0 20px rgba(108, 99, 255, 0.3);
+  
+  /* Transitions */
+  --transition-fast: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-normal: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+
+/* fees.css - Platform Fees Page Specific Styles */
+
+/* Fees Container */
+.fees-container {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-6);
+}
+
+.loading {
+    text-align: center;
+    padding: var(--space-8);
+    color: var(--text-secondary);
+    font-style: italic;
+}
+
+/* Fee Card Styles */
+.fee-card {
+    background: var(--gradient-card);
+    border: 1px solid var(--border-primary);
+    border-radius: var(--radius-lg);
+    padding: var(--space-6);
+    transition: all var(--transition-fast);
+    box-shadow: var(--shadow-sm);
+    position: relative;
+    overflow: hidden;
+}
+
+.fee-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: var(--gradient-primary);
+    transform: scaleX(0);
+    transition: transform var(--transition-fast);
+}
+
+.fee-card:hover::before {
+    transform: scaleX(1);
+}
+
+.fee-card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-lg);
+    border-color: var(--border-secondary);
+}
+
+/* Status Badges */
+.status-badge {
+    display: inline-block;
+    padding: var(--space-1) var(--space-3);
+    border-radius: var(--radius-full);
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.status-unpaid {
+    background: rgba(255, 92, 141, 0.2);
+    color: var(--accent-danger);
+    border: 1px solid var(--accent-danger);
+}
+
+.status-pending {
+    background: rgba(255, 183, 77, 0.2);
+    color: var(--accent-warning);
+    border: 1px solid var(--accent-warning);
+}
+
+.status-paid {
+    background: rgba(76, 217, 123, 0.2);
+    color: var(--accent-success);
+    border: 1px solid var(--accent-success);
+}
+
+.status-rejected {
+    background: rgba(255, 92, 141, 0.2);
+    color: var(--accent-danger);
+    border: 1px solid var(--accent-danger);
+}
+
+/* Fee Info Grid */
+.fee-info {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: var(--space-4);
+    margin-bottom: var(--space-4);
+}
+
+.fee-info-item {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+}
+
+.fee-info-label {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.fee-info-value {
+    font-size: 1.1rem;
+    color: var(--text-primary);
+    font-weight: 600;
+}
+
+.fee-amount {
+    font-size: 1.3rem;
+    color: var(--accent-primary);
+    font-weight: 700;
+}
+
+/* Upload Proof Section */
+.upload-section {
+    background: var(--bg-tertiary);
+    border: 1px solid var(--border-primary);
+    border-radius: var(--radius-md);
+    padding: var(--space-5);
+    margin: var(--space-4) 0;
+}
+
+.upload-section h4 {
+    margin: 0 0 var(--space-3) 0;
+    color: var(--text-primary);
+    font-size: 1.1rem;
+}
+
+.upload-controls {
+    display: flex;
+    gap: var(--space-3);
+    align-items: flex-end;
+    flex-wrap: wrap;
+}
+
+.file-input-wrapper {
+    flex: 1;
+    min-width: 200px;
+}
+
+.file-input-wrapper input[type="file"] {
+    width: 100%;
+    padding: var(--space-3);
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-primary);
+    border-radius: var(--radius-md);
+    color: var(--text-primary);
+    font-size: 0.9rem;
+}
+
+.file-input-wrapper input[type="file"]::file-selector-button {
+    background: var(--gradient-primary);
+    color: var(--text-primary);
+    border: none;
+    padding: var(--space-2) var(--space-4);
+    border-radius: var(--radius-sm);
+    margin-right: var(--space-3);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+}
+
+.file-input-wrapper input[type="file"]::file-selector-button:hover {
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-glow);
+}
+
+/* Payment Methods Section */
+.payment-methods {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-primary);
+    border-radius: var(--radius-lg);
+    padding: var(--space-6);
+    margin-bottom: var(--space-8);
+}
+
+.payment-methods h3 {
+    margin: 0 0 var(--space-5) 0;
+    color: var(--text-primary);
+    font-size: 1.3rem;
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+}
+
+.payment-methods h3::before {
+    content: "💳";
+    font-size: 1.5rem;
+}
+
+.methods-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: var(--space-5);
+}
+
+.method-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-primary);
+    border-radius: var(--radius-md);
+    padding: var(--space-5);
+    transition: all var(--transition-fast);
+    position: relative;
+}
+
+.method-card:hover {
+    border-color: var(--accent-primary);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-sm);
+}
+
+.method-header {
+    display: flex;
+    align-items: center;
+    justify-content: between;
+    margin-bottom: var(--space-3);
+    gap: var(--space-3);
+}
+
+.method-type {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin: 0;
+}
+
+.method-label {
+    background: var(--gradient-primary);
+    color: var(--text-primary);
+    padding: var(--space-1) var(--space-3);
+    border-radius: var(--radius-full);
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+
+.method-details {
+    color: var(--text-secondary);
+    line-height: 1.5;
+    margin-bottom: var(--space-3);
+}
+
+.method-details p {
+    margin: var(--space-2) 0;
+}
+
+.method-details code {
+    background: var(--bg-primary);
+    padding: var(--space-1) var(--space-2);
+    border-radius: var(--radius-sm);
+    font-family: var(--font-mono);
+    font-size: 0.9rem;
+    color: var(--accent-primary);
+}
+
+.method-instructions {
+    background: var(--bg-tertiary);
+    border-left: 3px solid var(--accent-secondary);
+    padding: var(--space-3) var(--space-4);
+    border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    margin-top: var(--space-3);
+}
+
+/* Copy Button */
+.copy-btn {
+    background: var(--gradient-secondary);
+    color: var(--text-primary);
+    border: none;
+    padding: var(--space-2) var(--space-3);
+    border-radius: var(--radius-sm);
+    font-size: 0.8rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-1);
+    margin-left: var(--space-2);
+}
+
+.copy-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 0 10px rgba(0, 212, 170, 0.4);
+}
+
+.copy-btn.copied {
+    background: var(--accent-success);
+}
+
+/* Proof Link */
+.proof-link {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    color: var(--accent-primary);
+    text-decoration: none;
+    font-weight: 600;
+    transition: all var(--transition-fast);
+}
+
+.proof-link:hover {
+    color: var(--accent-secondary);
+    transform: translateX(2px);
+}
+
+.proof-link::before {
+    content: "📎";
+    font-size: 1.1rem;
+}
+
+/* Action Buttons */
+.action-buttons {
+    display: flex;
+    gap: var(--space-3);
+    margin-top: var(--space-4);
+    flex-wrap: wrap;
+}
+
+.btn-upload {
+    background: var(--gradient-primary);
+    color: var(--text-primary);
+    border: none;
+    padding: var(--space-3) var(--space-5);
+    border-radius: var(--radius-md);
+    font-weight: 600;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+}
+
+.btn-upload:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-glow);
+}
+
+.btn-upload::before {
+    content: "📤";
+}
+
+/* Empty State */
+.empty-state {
+    text-align: center;
+    padding: var(--space-12) var(--space-6);
+    color: var(--text-secondary);
+}
+
+.empty-state::before {
+    content: "💰";
+    font-size: 3rem;
+    display: block;
+    margin-bottom: var(--space-4);
+    opacity: 0.5;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .fee-info {
+        grid-template-columns: 1fr;
+        gap: var(--space-3);
+    }
+    
+    .upload-controls {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .file-input-wrapper {
+        min-width: auto;
+    }
+    
+    .methods-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .action-buttons {
+        flex-direction: column;
+    }
+    
+    .btn-upload {
+        justify-content: center;
+    }
+}
+
+@media (max-width: 480px) {
+    .fee-card {
+        padding: var(--space-4);
+    }
+    
+    .payment-methods {
+        padding: var(--space-4);
+    }
+    
+    .method-card {
+        padding: var(--space-4);
+    }
+}
+
+/* Animation for new items */
+@keyframes slideInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.fee-card {
+    animation: slideInUp 0.5s ease-out;
+}
+
+/* Status-specific styling */
+.fee-card[data-status="paid"] {
+    border-left: 4px solid var(--accent-success);
+}
+
+.fee-card[data-status="unpaid"] {
+    border-left: 4px solid var(--accent-danger);
+}
+
+.fee-card[data-status="pending_verification"] {
+    border-left: 4px solid var(--accent-warning);
+}
+
+.fee-card[data-status="rejected"] {
+    border-left: 4px solid var(--accent-danger);
+}
+
+

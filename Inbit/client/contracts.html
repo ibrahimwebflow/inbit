@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Contracts - Inbit</title>
+  <link rel="stylesheet" href="../assets/css/client.css">
+  <link rel="stylesheet" href="../assets/css/client/client-contracts.css">
+</head>
+<body>
+    <!-- ┌------------- SIDEBAR NAV -------------┐ -->
+    <nav class="sidebar" id="sidebar">
+        <div class="sidebar-head">
+            <h1 class="logo">Inbit</h1>
+        </div>
+
+        <!-- Add this right after .sidebar-head -->
+<div class="theme-toggle-container">
+    <button id="themeToggle" class="theme-toggle-btn" aria-label="Toggle theme">
+        <span class="theme-icon">🌙</span>
+        <span class="theme-label">Dark Mode</span>
+    </button>
+</div>
+
+        <ul class="nav-links">
+            <li><a href="dashboard.html" class="nav-link"><span class="icon">📊</span><span class="label">Dashboard</span></a></li>
+            <li><a href="post-job.html" class="nav-link"><span class="icon">➕</span><span class="label">Post Job</span></a></li>
+            <li><a href="matches.html" class="nav-link"><span class="icon">🔍</span><span class="label">Matches</span></a></li>
+            <li><a href="hires.html" class="nav-link"><span class="icon">👥</span><span class="label">My Hires</span></a></li>
+            <li><a href="contracts.html" class="nav-link active"><span class="icon">📝</span><span class="label">Contracts</span></a></li>
+            <li><a href="preview-submissions.html" class="nav-link"><span class="icon">👁️</span><span class="label">Previews</span></a></li>
+            <li><a href="notifications.html" class="nav-link"><span class="icon">🔔</span><span class="label">Notifications</span></a></li>
+            <li><a href="settings.html" class="nav-link"><span class="icon">⚙️</span><span class="label">Settings</span></a></li>
+            <li class="nav-footer"><a href="login.html" class="nav-link logout"><span class="icon">🚪</span><span class="label">Logout</span></a></li>
+        </ul>
+    </nav>
+
+    <!-- ┌------------- MAIN CONTENT WRAPPER -------------┐ -->
+    <div class="main-wrapper" id="mainWrapper">
+        <header class="top-header">
+            <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Toggle menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            <div class="header-content">
+                <h1>My Contracts</h1>
+            </div>
+        </header>
+
+        <div class="dashboard-container">
+            <section class="dashboard-section">
+                <div class="section-header">
+                    <h2>Contract Management</h2>
+                    <div class="contracts-summary">
+                        <span class="summary-item">
+                            <span class="summary-label">Total</span>
+                            <span class="summary-value" id="totalContracts">0</span>
+                        </span>
+                        <span class="summary-item">
+                            <span class="summary-label">Active</span>
+                            <span class="summary-value" id="activeContracts">0</span>
+                        </span>
+                        <span class="summary-item">
+                            <span class="summary-label">Completed</span>
+                            <span class="summary-value" id="completedContracts">0</span>
+                        </span>
+                    </div>
+                </div>
+
+                <div class="contracts-filters">
+                    <button class="filter-btn active" data-filter="all">All Contracts</button>
+                    <button class="filter-btn" data-filter="active">Active</button>
+                    <button class="filter-btn" data-filter="completed">Completed</button>
+                    <button class="filter-btn" data-filter="pending">Awaiting Payment</button>
+                </div>
+
+                <div id="contractsList" class="contracts-grid">
+                    <div class="loading">Loading your contracts...</div>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <script>
+        // Mobile menu functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const mobileMenuBtn = document.getElementById("mobileMenuBtn");
+            const sidebar = document.getElementById("sidebar");
+            const mainWrapper = document.getElementById("mainWrapper");
+            
+            if (mobileMenuBtn && sidebar) {
+                mobileMenuBtn.addEventListener("click", function(e) {
+                    e.stopPropagation();
+                    sidebar.classList.toggle("mobile-open");
+                    mainWrapper.classList.toggle("menu-open");
+                    mobileMenuBtn.classList.toggle("active");
+                });
+
+                mainWrapper.addEventListener('click', function(e) {
+                    if (e.target === mainWrapper && mainWrapper.classList.contains('menu-open')) {
+                        sidebar.classList.remove("mobile-open");
+                        mainWrapper.classList.remove("menu-open");
+                        mobileMenuBtn.classList.remove("active");
+                    }
+                });
+
+                document.querySelectorAll('.nav-link').forEach(link => {
+                    link.addEventListener('click', () => {
+                        sidebar.classList.remove("mobile-open");
+                        mainWrapper.classList.remove("menu-open");
+                        mobileMenuBtn.classList.remove("active");
+                    });
+                });
+            }
+
+            // Filter functionality
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    const filter = this.dataset.filter;
+                    filterContracts(filter);
+                });
+            });
+        });
+
+        function filterContracts(filter) {
+            const contracts = document.querySelectorAll('.contract-card');
+            contracts.forEach(contract => {
+                const status = contract.dataset.status;
+                switch(filter) {
+                    case 'active':
+                        contract.style.display = status === 'active' ? 'block' : 'none';
+                        break;
+                    case 'completed':
+                        contract.style.display = status === 'completed' ? 'block' : 'none';
+                        break;
+                    case 'pending':
+                        contract.style.display = status === 'details_provided' ? 'block' : 'none';
+                        break;
+                    default:
+                        contract.style.display = 'block';
+                }
+            });
+        }
+
+
+        // Theme Toggle Functionality
+function initThemeToggle() {
+  const themeToggle = document.getElementById('themeToggle');
+  if (!themeToggle) return;
+  
+  const themeIcon = themeToggle.querySelector('.theme-icon');
+  const themeLabel = themeToggle.querySelector('.theme-label');
+  
+  // Check for saved theme or prefer-color-scheme
+  const savedTheme = localStorage.getItem('client-theme');
+  const prefersLight = window.matchMedia('(prefers-color-scheme: light)').matches;
+  
+  if (savedTheme === 'light' || (!savedTheme && prefersLight)) {
+    document.documentElement.setAttribute('data-theme', 'light');
+    themeIcon.textContent = '🌙';
+    themeLabel.textContent = 'Dark Mode';
+  } else {
+    document.documentElement.setAttribute('data-theme', 'dark');
+    themeIcon.textContent = '☀️';
+    themeLabel.textContent = 'Light Mode';
+  }
+  
+  themeToggle.addEventListener('click', () => {
+    const currentTheme = document.documentElement.getAttribute('data-theme');
+    
+    if (currentTheme === 'light') {
+      document.documentElement.setAttribute('data-theme', 'dark');
+      themeIcon.textContent = '☀️';
+      themeLabel.textContent = 'Light Mode';
+      localStorage.setItem('client-theme', 'dark');
+    } else {
+      document.documentElement.setAttribute('data-theme', 'light');
+      themeIcon.textContent = '🌙';
+      themeLabel.textContent = 'Dark Mode';
+      localStorage.setItem('client-theme', 'light');
+    }
+  });
+}
+
+// Initialize theme toggle when DOM loads
+document.addEventListener('DOMContentLoaded', () => {
+  initThemeToggle();
+});
+    </script>
+
+    <script type="module" src="../assets/js/client/contracts.js"></script>
+</body>
+</html>
+
